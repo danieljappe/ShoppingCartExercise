@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping com.example.shoppingcartexercise.Cart</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+
+<body>
+<h1>Indkøbskurv:</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Navn</th>
+        <th>Pris</th>
+        <th>Antal</th>
+        <th>Subtotal</th>
+        <th>Fjern vare</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="item, itemStat : ${items}">
+        <td th:text="${item.name}"></td>
+        <td th:text="${item.price}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.price * item.quantity}"></td>
+        <td>
+            <form method="post" th:action="@{/cart/remove}" th:object="${itemStat.index}">
+                <button type="submit">Fjern</button>
+                <input type="hidden" name="index" th:value="${itemStat.index}"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+    <tr>
+        <td colspan="3">Total:</td>
+        <td th:text="${total}"></td>
+        <td></td>
+    </tr>
+
+</table>
+
+<p>
+
+<form method="post" th:action="@{/cart/empty}">
+
+    <button type="submit">Tøm indkøbskurv</button>
+
+</form>
+
+</p>
+
+<h1>Varer:</h1>
+
+<form method="post" th:action="@{/cart/add}">
+
+    <p><label>Navn:</label>
+        <input type="text"  name="name" required/></p>
+    <p><label>Pris:</label>
+        <input type="number" name="price" min="0" step="0.01" required/></p>
+    <p><label>Antal:</label>
+        <input type="number" name="quantity" min="1" required/></p>
+    <button type="submit">Tilføj til indkøbskurv</button>
+
+</form>
+
+</body>
+
+</html>
